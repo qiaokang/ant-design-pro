@@ -1,6 +1,8 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
+const serverUrl = 'http://127.0.0.1';
+
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }
@@ -62,6 +64,13 @@ export async function queryFakeList(params) {
 
 export async function fakeAccountLogin(params) {
   return request('/api/login/account', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function login(params) {
+  return request(`${serverUrl}/login`, {
     method: 'POST',
     body: params,
   });

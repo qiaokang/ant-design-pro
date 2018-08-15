@@ -43,10 +43,7 @@ function checkStatus(response) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
-  const defaultOptions = {
-    credentials: 'include',
-  };
-  const newOptions = { ...defaultOptions, ...options };
+  const newOptions = { ...options };
   if (
     newOptions.method === 'POST' ||
     newOptions.method === 'PUT' ||
