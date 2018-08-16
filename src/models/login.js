@@ -15,12 +15,19 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
+      console.log(response);
       yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
+          type: 'changeLoginStatus',
+          payload: response,
+          loginType: payload.type,
+        });
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.code === '200') {
+        // const response = yield call(login, payload);
+        // yield put({
+        //   type: 'changeLoginStatus',
+        //   payload: response,
+        // });
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -66,12 +73,12 @@ export default {
   },
 
   reducers: {
-    changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+    changeLoginStatus(state, { payload, loginType }) {
+      // setAuthority(payload.currentAuthority);
       return {
         ...state,
-        status: payload.status,
-        type: payload.type,
+        status: payload.code,
+        type: loginType,
       };
     },
   },

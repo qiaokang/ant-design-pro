@@ -53,6 +53,7 @@ export default class Center extends PureComponent {
               }
               description={
                 <span>
+                  <Tag>陕西怡迪影视文化传媒有限公司</Tag>
                   <Tag>Ant Design</Tag>
                   <Tag>设计语言</Tag>
                   <Tag>蚂蚁金服</Tag>

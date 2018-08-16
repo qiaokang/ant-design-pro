@@ -77,19 +77,19 @@ export default class LoginPage extends Component {
           }}
         >
           <Tab key="account" tab="账户密码登录">
-            {login.status === 'error' &&
+            {login.status === '402' &&
               login.type === 'account' &&
               !submitting &&
-              this.renderMessage('账户或密码错误（admin/888888）')}
-            <UserName name="userName" placeholder="admin/user" />
+              this.renderMessage('账户或密码错误')}
+            <UserName name="account" placeholder="请输入用户名" />
             <Password
               name="password"
-              placeholder="888888/123456"
+              placeholder="请输入登录密码"
               onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
             />
           </Tab>
           <Tab key="mobile" tab="手机号登录">
-            {login.status === 'error' &&
+            {login.status === '200' &&
               login.type === 'mobile' &&
               !submitting &&
               this.renderMessage('验证码错误')}

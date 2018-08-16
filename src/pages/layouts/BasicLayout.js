@@ -88,13 +88,13 @@ class BasicLayout extends React.PureComponent {
       }
     });
     if (!currRouterData) {
-      return 'Ant Design Pro';
+      return '陕西怡迪影视文化传媒有限公司';
     }
     const message = formatMessage({
       id: currRouterData.locale || currRouterData.name,
       defaultMessage: currRouterData.name,
     });
-    return `${message} - Ant Design Pro`;
+    return `${message} - 陕西怡迪影视文化传媒有限公司`;
   };
 
   getLayoutStyle = () => {
