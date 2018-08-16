@@ -1,9 +1,9 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { login } from '../services/api';
+import { login, getFakeCaptcha } from '../services/api';
 import { setAuthority } from '../utils/authority';
-import { reloadAuthorized } from '../utils/Authorized';
 import { getPageQuery } from '../utils/utils';
+import { reloadAuthorized } from '../utils/Authorized';
 
 export default {
   namespace: 'login',
@@ -40,6 +40,11 @@ export default {
         yield put(routerRedux.replace(redirect || '/'));
       }
     },
+
+    *getCaptcha({ payload }, { call }) {
+      yield call(getFakeCaptcha, payload);
+    },
+
     *logout(_, { put }) {
       yield put({
         type: 'changeLoginStatus',
