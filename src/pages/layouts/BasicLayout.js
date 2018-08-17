@@ -10,7 +10,7 @@ import { formatMessage } from 'umi/locale';
 import SiderMenu from '../../components/SiderMenu';
 import Authorized from '../../utils/Authorized';
 import SettingDarwer from '../../components/SettingDarwer';
-import logo from '../../assets/logo.svg';
+import logo from '../../assets/logo.png';
 import Footer from './Footer';
 import Header from './Header';
 import Context from './MenuContext';
