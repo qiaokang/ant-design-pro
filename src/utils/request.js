@@ -71,8 +71,13 @@ export default function request(url, options = {}) {
     .update(fingerprint)
     .digest('hex');
 
-  const defaultOptions = {};
-  const newOptions = { ...defaultOptions, ...options };
+  const defaultOptions = {
+    credentials: 'include',
+  };
+  const newOptions = {
+    ...defaultOptions,
+    ...options,
+  };
   if (
     newOptions.method === 'POST' ||
     newOptions.method === 'PUT' ||

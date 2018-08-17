@@ -1,7 +1,7 @@
 import { stringify } from 'qs';
 import request from '../utils/request';
 
-const serverUrl = 'http://127.0.0.1';
+const serverUrl = 'http://127.0.0.1:8088';
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');
@@ -132,4 +132,8 @@ export async function queryNotices() {
 
 export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
+}
+
+export async function getUserInfo(params) {
+  return request(`${serverUrl}/user/read/promission`);
 }

@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { login, getFakeCaptcha } from '../services/api';
+import { login, getFakeCaptcha, getUserInfo } from '../services/api';
 import { setAuthority } from '../utils/authority';
 import { getPageQuery } from '../utils/utils';
 import { reloadAuthorized } from '../utils/Authorized';
@@ -23,11 +23,12 @@ export default {
         });
       // Login successfully
       if (response.code === '200') {
-        // const response = yield call(login, payload);
-        // yield put({
-        //   type: 'changeLoginStatus',
-        //   payload: response,
-        // });
+        const userInfoMenu = yield call(getUserInfo);
+        console.log(userInfoMenu);
+        yield put({
+          type: 'saveUserInfoAndMenu',
+          payload: userInfoMenu,
+        });
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -74,12 +75,24 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload, loginType }) {
-      // setAuthority(payload.currentAuthority);
       return {
         ...state,
         status: payload.code,
         type: loginType,
       };
+    },
+    saveUserInfoAndMenu(state, { payload }){
+      if (payload.code === '200') {
+        // setAuthority(payload.currentAuthority);
+        return {
+          ...state,
+          user: payload.user,
+          menus: payload.menus,
+        };
+      }
+      return {
+        ...state,
+      }
     },
   },
 };
