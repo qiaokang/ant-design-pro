@@ -2,42 +2,41 @@
 
 // https://umijs.org/config/
 const pageRoutes = require('./router.config');
+const webpackplugin = require('./plugin.config');
 const path = require('path');
 
 export default {
   // add for transfer to umi
   plugins: [
-    'umi-plugin-dva',
-    'umi-plugin-locale',
-    // TODO 决定是否使用约定路由，如果使用配置路由那么 umi-plugin-routes 可以去掉了
-    // [
-    //   'umi-plugin-routes',
-    //   {
-    //     exclude: [/\.test\.js/],
-    //     update(routes) {
-    //       return [...pageRoutes, ...routes];
-    //     },
-    //   },
-    // ],
+    [
+      'umi-plugin-react',
+      {
+        antd: true,
+        dva: {
+          hmr: true,
+        },
+        locale: {
+          enable: true, // default false
+          default: 'zh-CN', // default zh-CN
+          baseNavigator: true, // default true, when it is true, will use `navigator.language` overwrite default
+        },
+        polyfills: ['ie9'],
+        ...(
+          (!process.env.TEST && require('os').platform() === 'darwin')
+          ? {
+              dll: ['dva', 'dva/router', 'dva/saga', 'dva/fetch'],
+              hardSource: true,
+            }
+          : {}
+        ),
+      },
+    ],
   ],
-  locale: {
-    enable: true, // default false
-    default: 'zh-CN', // default zh-CN
-    baseNavigator: true, // default true, when it is true, will use `navigator.language` overwrite default
-    antd: true, // use antd, default is true
-  },
   // 路由配置
   routes: pageRoutes,
 
   theme: {
     'card-actions-background': '#f5f8fa',
-  },
-  // entry: 'src/index.js', // TODO remove
-  extraBabelPlugins: [['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }]],
-  env: {
-    development: {
-      extraBabelPlugins: ['dva-hmr'],
-    },
   },
   externals: {
     '@antv/data-set': 'DataSet',
@@ -62,15 +61,19 @@ export default {
       ) {
         return localName;
       }
-      const antdProPath = context.resourcePath.match(/src(.*)/)[1].replace('.less', '');
-      const arr = antdProPath
-        .split('/')
-        .map(a => a.replace(/([A-Z])/g, '-$1'))
-        .map(a => a.toLowerCase());
-      return `antd-pro${arr.join('-')}-${localName}`.replace(/--/g, '-');
+      const match = context.resourcePath.match(/src(.*)/);
+      if (match && match[1]) {
+        const antdProPath = match[1].replace('.less', '');
+        const arr = antdProPath
+          .split('/')
+          .map(a => a.replace(/([A-Z])/g, '-$1'))
+          .map(a => a.toLowerCase());
+        return `antd-pro${arr.join('-')}-${localName}`.replace(/--/g, '-');
+      } else {
+        return localName;
+      }
     },
   },
-  disableFastClick: true,
   manifest: {
     name: 'ant-design-pro',
     background_color: '#FFF',
@@ -84,5 +87,10 @@ export default {
         type: 'image/png',
       },
     ],
+  },
+
+  chainWebpack: webpackplugin,
+  cssnano: {
+    mergeRules: false,
   },
 };
