@@ -2,6 +2,7 @@ import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
 import { login, getFakeCaptcha, getUserInfo } from '../services/api';
 import { setAuthority } from '../utils/authority';
+import { notification } from 'antd';
 import { getPageQuery } from '../utils/utils';
 import { reloadAuthorized } from '../utils/Authorized';
 
@@ -75,6 +76,12 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload, loginType }) {
+      if (payload.code === '402') {
+        notification.error({
+          message: `账户或密码错误`,
+          description: '请核对后重新输入账户或密码',
+        });
+      }
       return {
         ...state,
         status: payload.code,

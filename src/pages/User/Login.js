@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Link } from 'dva/router';
 import { Checkbox, Alert, Icon } from 'antd';
 import Login from 'components/Login';
+import { notification } from 'antd';
 import styles from './Login.less';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
@@ -79,8 +80,7 @@ export default class LoginPage extends Component {
           <Tab key="account" tab="账户密码登录">
             {login.status === '402' &&
               login.type === 'account' &&
-              !submitting &&
-              this.renderMessage('账户或密码错误')}
+              !submitting && this.renderMessage('账户或密码错误')}
             <UserName name="account" placeholder="请输入用户名" />
             <Password
               name="password"
